@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MCQ Book Builder — EDUZEN v15</title>
+<title>MCQ Book Builder — EDUZEN v16</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Mina:wght@400;700&family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@400;500;600;700;800&family=Anek+Bangla:wght@400;500;600;700;800&family=Atma:wght@400;500;600;700&family=Galada&family=Inter:wght@700;800;900&display=swap" rel="stylesheet">
@@ -228,8 +228,8 @@
 
 <div class="topbar">
   <div>
-    <h1>📘 MCQ Book Builder — EDUZEN v15</h1>
-    <div class="brand">Table-Atomic • Smart Continuation</div>
+    <h1>📘 MCQ Book Builder — EDUZEN v16</h1>
+    <div class="brand">English + Bangla Options • Table-Atomic</div>
   </div>
   <div class="btns">
     <button class="btn btn-ghost" onclick="saveToBrowser()">💾 সেভ</button>
@@ -322,7 +322,7 @@
   <div class="panel">
     <div class="panel-head">
       <span>👁️ লাইভ প্রিভিউ (A4 সাইজ)</span>
-      <span class="hint">Table-Atomic flow</span>
+      <span class="hint">EN + BN অপশন সাপোর্ট</span>
     </div>
     <div class="preview-wrap" id="preview"></div>
   </div>
@@ -331,7 +331,9 @@
 <div class="measure-area" id="measureArea"></div>
 
 <script>
-/* ========== EDUZEN লোগো ========== */
+/* ============================================================
+   EDUZEN লোগো (SVG)
+   ============================================================ */
 function eduzenLogo(size = 26) {
   return `
     <span class="eduzen-logo">
@@ -358,42 +360,65 @@ function eduzenLogo(size = 26) {
   `;
 }
 
-/* ========== ডিফল্ট ডেটা ========== */
-const DEFAULT_TEXT = `১. দ্বিতীয় বিশ্বযুদ্ধ পরবর্তী আন্তর্জাতিক রাজনীতিতে 'ঠান্ডা লড়াই' বা 'Cold War' শব্দটি প্রথম কে প্রয়োগ করেন?
+/* ============================================================
+   ডিফল্ট ডেটা
+   ============================================================ */
+const DEFAULT_TEXT = `১. ইংরেজি 'ট্র্যাভেলার' (Traveller) শব্দের অর্থ কী?
+(a) দূত
+(b) পর্যটক *
+(c) বণিক
+(d) সৈনিক
+
+২. ভারতে আগত একজন আরবীয় পর্যটকের নাম কী?
+(a) মার্কো পোলো
+(b) ইবন বতুতা
+(c) আল বিরুনি *
+(d) বার্নিয়ে
+
+৩. আল বিরুনির জন্ম কোথায়?
+(a) বাগদাদে
+(b) মরক্কোয়
+(c) আরবের খাওয়ারিজমে *
+(d) পারস্যে
+
+৪. দ্বিতীয় বিশ্বযুদ্ধ পরবর্তী আন্তর্জাতিক রাজনীতিতে 'ঠান্ডা লড়াই' বা 'Cold War' শব্দটি প্রথম কে প্রয়োগ করেন?
 ক) উইনস্টন চার্চিল
-খ) বার্নার্ড বার্চ
+খ) বার্নার্ড বার্চ *
 গ) হ্যারি ট্রুম্যান
 ঘ) ওয়াল্টার লিপম্যান
 
-২. 'লৌহ যবনিকা' (Iron Curtain) তত্ত্বটি ১৯৪৬ সালে কে তাঁর বক্তৃতায় প্রথম উল্লেখ করেন?
-ক) ফ্র্যাংক্লিন রুজভেল্ট
-খ) হ্যারি ট্রুম্যান
-গ) উইনস্টন চার্চিল
-ঘ) জোসেফ স্ট্যালিন
-
-৩. জোট নিরপেক্ষ আন্দোলনের (NAM) প্রথম শীর্ষ সম্মেলন ১৯৬১ সালে কোথায় অনুষ্ঠিত হয়েছিল?
+৫. জোট নিরপেক্ষ আন্দোলনের (NAM) প্রথম শীর্ষ সম্মেলন ১৯৬১ সালে কোথায় অনুষ্ঠিত হয়েছিল?
 ক) কায়রো
 খ) নিউ দিল্লি
-গ) বেলগ্রেড
-ঘ) বান্দুং
-
-৪. ১৯৫৫ সালে অনুষ্ঠিত 'বান্দুং সম্মেলন'-এ এশিয়া ও আফ্রিকার কতগুলি রাষ্ট্র অংশগ্রহণ করেছিল?
-ক) ২৩টি
-খ) ২৯টি
-গ) ৩০টি
-ঘ) ৩৫টি
-
-৫. ঠান্ডা লড়াইয়ের সবচেয়ে বিপজ্জনক মুহূর্ত কিউবা ক্ষেপণাস্ত্র সংকট কোন সালে দেখা দেয়?
-ক) ১৯৬০
-খ) ১৯৬৪
-গ) ১৯৬২
-ঘ) ১৯৬৩`;
+গ) বেলগ্রেড *
+ঘ) বান্দুং`;
 
 document.getElementById('editor').value =
   localStorage.getItem('mcq_text') || DEFAULT_TEXT;
 
-/* ========== পার্সার ========== */
-const BN_LETTERS = ['ক','খ','গ','ঘ','ঙ'];
+/* ============================================================
+   🧠 পার্সার (EN + BN উভয় অপশন সাপোর্ট)
+   ============================================================ */
+// সব বৈধ অপশন অক্ষর — বাংলা এবং ইংরেজি
+const OPTION_LETTERS = 'কখগঘঙaAbBcCdD';
+const OPTION_LETTER_CLASS = '[' + OPTION_LETTERS + ']';
+
+function isOptionLine(line) {
+  // (a) ... বা (ক) ... বা a) ... বা ক) ...
+  const re1 = new RegExp('^\\(' + OPTION_LETTER_CLASS + '\\)\\s*\\S');
+  const re2 = new RegExp('^' + OPTION_LETTER_CLASS + '[.)]\\s*\\S');
+  return re1.test(line) || re2.test(line);
+}
+
+function extractOption(line) {
+  // প্রথমে (a) বা (ক) ফরম্যাট
+  let m = line.match(new RegExp('^\\((' + OPTION_LETTER_CLASS + ')\\)\\s*(.+)$'));
+  if (m) return { letter: m[1], text: m[2] };
+  // তারপর a) বা ক) ফরম্যাট
+  m = line.match(new RegExp('^(' + OPTION_LETTER_CLASS + ')[.)]\\s*(.+)$'));
+  if (m) return { letter: m[1], text: m[2] };
+  return null;
+}
 
 function parseQuestions(text) {
   const blocks = text.trim().split(/\n\s*\n/);
@@ -420,9 +445,14 @@ function parseQuestions(text) {
 
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i];
-      if (new RegExp('^[' + BN_LETTERS.join('') + '][.)]\\s').test(line)) {
-        optionLines.push(line); continue;
+
+      // ✅ EN + BN অপশন line
+      if (isOptionLine(line)) {
+        optionLines.push(line);
+        continue;
       }
+
+      // Assertion / Reason
       const aMatch = line.match(/^Assertion\s*\(A\)\s*[:।]\s*(.+)$/i);
       const rMatch = line.match(/^Reason\s*\(R\)\s*[:।]\s*(.+)$/i);
       if (aMatch) { assertion = aMatch[1].trim(); continue; }
@@ -430,6 +460,7 @@ function parseQuestions(text) {
       contentLines.push(line);
     }
 
+    // টাইপ ডিটেকশন
     let type = 'standard';
     let matchingRows = [], sequenceSteps = [], statements = [];
 
@@ -467,17 +498,18 @@ function parseQuestions(text) {
       }
     }
 
+    // অপশন পার্স (EN + BN)
     const options = [];
     for (const line of optionLines) {
-      const om = line.match(/^([কখগঘঙ])[.)]\s*(.+)$/);
+      const om = extractOption(line);
       if (!om) continue;
-      let optText = om[2].trim();
+      let optText = om.text.trim();
       let correct = false;
       if (optText.includes('*')) {
         correct = true;
         optText = optText.replace(/\*/g, '').replace(/\s+/g, ' ').trim();
       }
-      options.push({ letter: om[1], text: optText, correct });
+      options.push({ letter: om.letter, text: optText, correct });
     }
 
     list.push({ num: qNum, text: qText, type, options, matchingRows, sequenceSteps, statements, assertion, reason });
@@ -490,7 +522,10 @@ function bnNum(n) {
   return String(n).split('').map(c => d[+c] || c).join('');
 }
 
-/* ========== 🧩 Fragments with Table-Atomic rule ========== */
+/* ============================================================
+   🧩 প্রশ্ন → Fragments
+   Matching টেবিল atomic, সাধারণ MCQ ভাঙা যাবে
+   ============================================================ */
 function breakQuestionIntoFragments(q) {
   const frags = [];
   const qid = 'q_' + q.num + '_' + Math.random().toString(36).slice(2, 7);
@@ -519,7 +554,7 @@ function breakQuestionIntoFragments(q) {
     ).join('')}</ol>`;
   }
 
-  // ============ ✅ MATCHING = ATOMIC (পুরোটা একসাথে) ============
+  // ✅ MATCHING = ATOMIC (পুরোটা একসাথে থাকবে)
   if (q.type === 'matching') {
     frags.push({
       qid, qNum: q.num, isHead: true, isEnd: true, atomic: true,
@@ -537,7 +572,7 @@ function breakQuestionIntoFragments(q) {
     return frags;
   }
 
-  // ============ সাধারণ প্রশ্ন: ভাঙা যাবে ============
+  // ✅ সাধারণ প্রশ্ন: ভাঙা যাবে
   // Fragment 1: q-head + body
   frags.push({
     qid, qNum: q.num, isHead: true, isEnd: false,
@@ -550,7 +585,7 @@ function breakQuestionIntoFragments(q) {
     </div>`
   });
 
-  // Fragment 2, 3: প্রতি সারিতে ২টি অপশন
+  // Fragment 2, 3...: প্রতি সারিতে ২টি অপশন
   const opts = q.options;
   const rowCount = Math.ceil(opts.length / 2);
   for (let r = 0; r < rowCount; r++) {
@@ -569,7 +604,9 @@ function breakQuestionIntoFragments(q) {
   return frags;
 }
 
-/* ========== Probe Available Height ========== */
+/* ============================================================
+   📐 Probe Available Height
+   ============================================================ */
 function probeAvailableHeight() {
   const probe = document.createElement('div');
   probe.style.cssText = 'position:fixed;left:-99999px;top:0;width:210mm;visibility:hidden;pointer-events:none;';
@@ -591,7 +628,9 @@ function probeAvailableHeight() {
   return Math.floor(h) - 8;
 }
 
-/* ========== 📏 Measure items ========== */
+/* ============================================================
+   📏 Measurement (Real 2-column)
+   ============================================================ */
 function measureItems(items, renderer) {
   const area = document.getElementById('measureArea');
   area.innerHTML = `
@@ -621,7 +660,9 @@ function measureItems(items, renderer) {
   return heights;
 }
 
-/* ========== ⚖️ Pagination with fragment tracking ========== */
+/* ============================================================
+   ⚖️ Pagination (State Machine)
+   ============================================================ */
 function paginate(fragments, heights, maxColHeight) {
   const pages = [];
   const positions = new Map();
@@ -670,7 +711,9 @@ function paginate(fragments, heights, maxColHeight) {
   return { pages, positions };
 }
 
-/* ========== 🎨 Render pages with continuation markers ========== */
+/* ============================================================
+   🎨 Render Pages with Continuation Markers
+   ============================================================ */
 function renderFragmentsWithContinuity(result) {
   const { pages, positions } = result;
   let html = '';
@@ -734,7 +777,9 @@ function renderFragmentsWithContinuity(result) {
   return html;
 }
 
-/* ========== Check overflow ========== */
+/* ============================================================
+   Check Overflow
+   ============================================================ */
 function checkOverflow(html) {
   const temp = document.createElement('div');
   temp.style.cssText = 'position:fixed;left:-99999px;top:0;width:210mm;';
@@ -748,7 +793,9 @@ function checkOverflow(html) {
   return hasOverflow;
 }
 
-/* ========== Base max height ========== */
+/* ============================================================
+   Base Max Height
+   ============================================================ */
 let PROBED_MAX_HEIGHT = null;
 
 function getBaseMaxHeight(density) {
@@ -761,7 +808,9 @@ function getBaseMaxHeight(density) {
   return Math.floor(base * factor);
 }
 
-/* ========== ডিবাউন্স ========== */
+/* ============================================================
+   ডিবাউন্স Render
+   ============================================================ */
 let renderTimer = null;
 function scheduleRender() {
   const badge = document.getElementById('statusBadge');
@@ -786,7 +835,9 @@ function scheduleRender() {
   }, 300);
 }
 
-/* ========== Render ========== */
+/* ============================================================
+   🎨 Main Render
+   ============================================================ */
 function render() {
   const text = document.getElementById('editor').value;
   const bookName = document.getElementById('bookName').value || 'MCQ';
@@ -858,7 +909,9 @@ function render() {
   preview.innerHTML = html;
 }
 
-/* ========== Simple pagination for answers ========== */
+/* ============================================================
+   Simple pagination for answers (atomic)
+   ============================================================ */
 function paginateSimple(items, heights, maxColHeight) {
   const pages = [];
   let left = [], right = [];
@@ -911,7 +964,9 @@ function renderAnswerPages(pages, bookName, chapter, brand) {
   return html;
 }
 
-/* ========== Renderers ========== */
+/* ============================================================
+   Renderers
+   ============================================================ */
 function renderBrandBanner(brand) {
   const isEduzen = brand.trim().toLowerCase().includes('eduzen');
   const logoHTML = isEduzen
@@ -960,7 +1015,9 @@ function escapeHtml(s) {
     c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
 }
 
-/* ========== ফন্ট ========== */
+/* ============================================================
+   🔤 ফন্ট কন্ট্রোল
+   ============================================================ */
 function setFonts(q, o, a) {
   document.getElementById('fsQ').value = q;
   document.getElementById('fsOpt').value = o;
@@ -1002,11 +1059,14 @@ function customFont() {
   scheduleRender();
 }
 
-/* ========== সেভ / ব্যাকআপ ========== */
+/* ============================================================
+   সেভ / ব্যাকআপ / রিস্টোর
+   ============================================================ */
 function saveToBrowser() {
   localStorage.setItem('mcq_text', document.getElementById('editor').value);
   alert('✅ সেভ হয়েছে!');
 }
+
 function downloadBackup() {
   const data = {
     text: document.getElementById('editor').value,
@@ -1016,7 +1076,11 @@ function downloadBackup() {
     density: document.getElementById('density').value,
     mode: document.getElementById('mode').value,
     fontFamily: document.getElementById('fontFamily').value,
-    fonts: { q: document.getElementById('fsQ').value, opt: document.getElementById('fsOpt').value, ans: document.getElementById('fsAns').value }
+    fonts: {
+      q: document.getElementById('fsQ').value,
+      opt: document.getElementById('fsOpt').value,
+      ans: document.getElementById('fsAns').value
+    }
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
@@ -1024,6 +1088,7 @@ function downloadBackup() {
   a.download = 'mcq-backup.json';
   a.click();
 }
+
 function loadBackup() {
   const input = document.createElement('input');
   input.type = 'file'; input.accept = '.json';
@@ -1051,6 +1116,9 @@ function loadBackup() {
   input.click();
 }
 
+/* ============================================================
+   প্রথম রেন্ডার (ফন্ট লোড হলে)
+   ============================================================ */
 if (document.fonts && document.fonts.ready) {
   document.fonts.ready.then(() => scheduleRender());
 } else {
@@ -1058,4 +1126,4 @@ if (document.fonts && document.fonts.ready) {
 }
 </script>
 </body>
-</html>
+  </html>
