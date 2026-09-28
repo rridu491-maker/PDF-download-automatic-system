@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MCQ Book Builder — EDUZEN v16</title>
+<title>MCQ Book Builder — EDUZEN v17</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Mina:wght@400;700&family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@400;500;600;700;800&family=Anek+Bangla:wght@400;500;600;700;800&family=Atma:wght@400;500;600;700&family=Galada&family=Inter:wght@700;800;900&display=swap" rel="stylesheet">
@@ -228,8 +228,8 @@
 
 <div class="topbar">
   <div>
-    <h1>📘 MCQ Book Builder — EDUZEN v16</h1>
-    <div class="brand">English + Bangla Options • Table-Atomic</div>
+    <h1>📘 MCQ Book Builder — EDUZEN v17</h1>
+    <div class="brand">Answer Sheet Fixed • EN + BN</div>
   </div>
   <div class="btns">
     <button class="btn btn-ghost" onclick="saveToBrowser()">💾 সেভ</button>
@@ -322,7 +322,7 @@
   <div class="panel">
     <div class="panel-head">
       <span>👁️ লাইভ প্রিভিউ (A4 সাইজ)</span>
-      <span class="hint">EN + BN অপশন সাপোর্ট</span>
+      <span class="hint">প্রশ্ন + উত্তরপত্র</span>
     </div>
     <div class="preview-wrap" id="preview"></div>
   </div>
@@ -332,7 +332,7 @@
 
 <script>
 /* ============================================================
-   EDUZEN লোগো (SVG)
+   EDUZEN লোগো
    ============================================================ */
 function eduzenLogo(size = 26) {
   return `
@@ -381,40 +381,30 @@ const DEFAULT_TEXT = `১. ইংরেজি 'ট্র্যাভেলার
 (c) আরবের খাওয়ারিজমে *
 (d) পারস্যে
 
-৪. দ্বিতীয় বিশ্বযুদ্ধ পরবর্তী আন্তর্জাতিক রাজনীতিতে 'ঠান্ডা লড়াই' বা 'Cold War' শব্দটি প্রথম কে প্রয়োগ করেন?
+৪. দ্বিতীয় বিশ্বযুদ্ধ পরবর্তী আন্তর্জাতিক রাজনীতিতে 'ঠান্ডা লড়াই' শব্দটি প্রথম কে প্রয়োগ করেন?
 ক) উইনস্টন চার্চিল
 খ) বার্নার্ড বার্চ *
 গ) হ্যারি ট্রুম্যান
-ঘ) ওয়াল্টার লিপম্যান
-
-৫. জোট নিরপেক্ষ আন্দোলনের (NAM) প্রথম শীর্ষ সম্মেলন ১৯৬১ সালে কোথায় অনুষ্ঠিত হয়েছিল?
-ক) কায়রো
-খ) নিউ দিল্লি
-গ) বেলগ্রেড *
-ঘ) বান্দুং`;
+ঘ) ওয়াল্টার লিপম্যান`;
 
 document.getElementById('editor').value =
   localStorage.getItem('mcq_text') || DEFAULT_TEXT;
 
 /* ============================================================
-   🧠 পার্সার (EN + BN উভয় অপশন সাপোর্ট)
+   🧠 পার্সার — EN (a)(b)(c)(d) + BN (ক)(খ)(গ)(ঘ) উভয় সাপোর্ট
    ============================================================ */
-// সব বৈধ অপশন অক্ষর — বাংলা এবং ইংরেজি
 const OPTION_LETTERS = 'কখগঘঙaAbBcCdD';
 const OPTION_LETTER_CLASS = '[' + OPTION_LETTERS + ']';
 
 function isOptionLine(line) {
-  // (a) ... বা (ক) ... বা a) ... বা ক) ...
   const re1 = new RegExp('^\\(' + OPTION_LETTER_CLASS + '\\)\\s*\\S');
   const re2 = new RegExp('^' + OPTION_LETTER_CLASS + '[.)]\\s*\\S');
   return re1.test(line) || re2.test(line);
 }
 
 function extractOption(line) {
-  // প্রথমে (a) বা (ক) ফরম্যাট
   let m = line.match(new RegExp('^\\((' + OPTION_LETTER_CLASS + ')\\)\\s*(.+)$'));
   if (m) return { letter: m[1], text: m[2] };
-  // তারপর a) বা ক) ফরম্যাট
   m = line.match(new RegExp('^(' + OPTION_LETTER_CLASS + ')[.)]\\s*(.+)$'));
   if (m) return { letter: m[1], text: m[2] };
   return null;
@@ -445,14 +435,7 @@ function parseQuestions(text) {
 
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i];
-
-      // ✅ EN + BN অপশন line
-      if (isOptionLine(line)) {
-        optionLines.push(line);
-        continue;
-      }
-
-      // Assertion / Reason
+      if (isOptionLine(line)) { optionLines.push(line); continue; }
       const aMatch = line.match(/^Assertion\s*\(A\)\s*[:।]\s*(.+)$/i);
       const rMatch = line.match(/^Reason\s*\(R\)\s*[:।]\s*(.+)$/i);
       if (aMatch) { assertion = aMatch[1].trim(); continue; }
@@ -460,7 +443,6 @@ function parseQuestions(text) {
       contentLines.push(line);
     }
 
-    // টাইপ ডিটেকশন
     let type = 'standard';
     let matchingRows = [], sequenceSteps = [], statements = [];
 
@@ -498,7 +480,6 @@ function parseQuestions(text) {
       }
     }
 
-    // অপশন পার্স (EN + BN)
     const options = [];
     for (const line of optionLines) {
       const om = extractOption(line);
@@ -524,13 +505,13 @@ function bnNum(n) {
 
 /* ============================================================
    🧩 প্রশ্ন → Fragments
-   Matching টেবিল atomic, সাধারণ MCQ ভাঙা যাবে
+   - Matching টেবিল = ATOMIC (ভাঙবে না)
+   - সাধারণ MCQ = ভাঙা যাবে (হেড + অপশন সারি)
    ============================================================ */
 function breakQuestionIntoFragments(q) {
   const frags = [];
   const qid = 'q_' + q.num + '_' + Math.random().toString(36).slice(2, 7);
 
-  // Body HTML
   let bodyHTML = '';
   if (q.type === 'statements') {
     bodyHTML = `<div class="statements-block">${q.statements.map(s =>
@@ -554,7 +535,7 @@ function breakQuestionIntoFragments(q) {
     ).join('')}</ol>`;
   }
 
-  // ✅ MATCHING = ATOMIC (পুরোটা একসাথে থাকবে)
+  // Matching / Sequence / Assertion → ATOMIC (পুরোটা একসাথে)
   if (q.type === 'matching') {
     frags.push({
       qid, qNum: q.num, isHead: true, isEnd: true, atomic: true,
@@ -572,8 +553,7 @@ function breakQuestionIntoFragments(q) {
     return frags;
   }
 
-  // ✅ সাধারণ প্রশ্ন: ভাঙা যাবে
-  // Fragment 1: q-head + body
+  // সাধারণ MCQ: ভাঙা যাবে
   frags.push({
     qid, qNum: q.num, isHead: true, isEnd: false,
     html: `<div class="q-item q-frag q-frag-head">
@@ -585,7 +565,6 @@ function breakQuestionIntoFragments(q) {
     </div>`
   });
 
-  // Fragment 2, 3...: প্রতি সারিতে ২টি অপশন
   const opts = q.options;
   const rowCount = Math.ceil(opts.length / 2);
   for (let r = 0; r < rowCount; r++) {
@@ -629,7 +608,7 @@ function probeAvailableHeight() {
 }
 
 /* ============================================================
-   📏 Measurement (Real 2-column)
+   📏 Measurement
    ============================================================ */
 function measureItems(items, renderer) {
   const area = document.getElementById('measureArea');
@@ -661,7 +640,7 @@ function measureItems(items, renderer) {
 }
 
 /* ============================================================
-   ⚖️ Pagination (State Machine)
+   ⚖️ Pagination with fragment tracking
    ============================================================ */
 function paginate(fragments, heights, maxColHeight) {
   const pages = [];
@@ -696,6 +675,7 @@ function paginate(fragments, heights, maxColHeight) {
         pages.push({ left: [item], right: [] });
         positions.set(i, { page: pageNum, col: 'L' });
         pageNum++;
+        left = []; right = []; lh = 0; rh = 0; stage = 'L';
       } else {
         pages.push({ left, right });
         pageNum++;
@@ -719,7 +699,6 @@ function renderFragmentsWithContinuity(result) {
   let html = '';
 
   pages.forEach((pg, pageIdx) => {
-    // Left column
     let leftHTML = '';
     pg.left.forEach(item => {
       const idx = item.idx;
@@ -729,15 +708,11 @@ function renderFragmentsWithContinuity(result) {
       const prevFragSameQ = (idx > 0 && result._fragments[prevIdx] && result._fragments[prevIdx].qid === item.frag.qid);
       const inDiffPos = prevPos && currPos && (prevPos.page !== currPos.page || prevPos.col !== currPos.col);
       const isCont = prevFragSameQ && inDiffPos && !item.frag.isHead;
-
       let fragHtml = item.frag.html;
-      if (isCont) {
-        fragHtml = fragHtml.replace('class="q-item q-frag', 'class="q-item q-frag q-cont');
-      }
+      if (isCont) fragHtml = fragHtml.replace('class="q-item q-frag', 'class="q-item q-frag q-cont');
       leftHTML += fragHtml;
     });
 
-    // Right column
     let rightHTML = '';
     pg.right.forEach(item => {
       const idx = item.idx;
@@ -747,11 +722,8 @@ function renderFragmentsWithContinuity(result) {
       const prevFragSameQ = (idx > 0 && result._fragments[prevIdx] && result._fragments[prevIdx].qid === item.frag.qid);
       const inDiffPos = prevPos && currPos && (prevPos.page !== currPos.page || prevPos.col !== currPos.col);
       const isCont = prevFragSameQ && inDiffPos && !item.frag.isHead;
-
       let fragHtml = item.frag.html;
-      if (isCont) {
-        fragHtml = fragHtml.replace('class="q-item q-frag', 'class="q-item q-frag q-cont');
-      }
+      if (isCont) fragHtml = fragHtml.replace('class="q-item q-frag', 'class="q-item q-frag q-cont');
       rightHTML += fragHtml;
     });
 
@@ -869,7 +841,7 @@ function render() {
 
     let safety = 0;
     let finalHTML = null;
-    for (let iter = 0; iter < 10; iter++) {
+    for (let iter = 0; iter < 12; iter++) {
       const maxH = baseMaxH - safety;
       const result = paginate(fragments, heights, maxH);
       result._fragments = fragments;
@@ -880,29 +852,46 @@ function render() {
       const h = renderFragmentsWithContinuity(result);
       if (!checkOverflow(h)) { finalHTML = h; break; }
       safety += 6;
-      if (safety > 60) { finalHTML = h; break; }
     }
-    html += finalHTML || '';
+    if (finalHTML === null) {
+      const result = paginate(fragments, heights, baseMaxH - 72);
+      result._fragments = fragments;
+      result._brand = brand;
+      result._bookName = bookName;
+      result._chapter = chapter;
+      finalHTML = renderFragmentsWithContinuity(result);
+    }
+    html += finalHTML;
   }
 
-  /* -------- উত্তরপত্র -------- */
+  /* -------- উত্তরপত্র সেকশন --------
+     শুধু standard MCQ + statements প্রশ্ন
+     matching / assertion / sequence বাদ
+  */
   if (mode === 'both' || mode === 'answers') {
-    const ansFiltered = questions.filter(q => q.type === 'standard' || q.type === 'statements');
+    const ansFiltered = questions.filter(q =>
+      q.type === 'standard' || q.type === 'statements'
+    );
+
     if (ansFiltered.length) {
       html += `<div class="section-title answer-title"><span>📝 উত্তরপত্র</span></div>`;
+
       const aHeights = measureItems(ansFiltered, renderAnswer);
 
       let safety = 0;
       let finalHTML = null;
-      for (let iter = 0; iter < 10; iter++) {
+      for (let iter = 0; iter < 12; iter++) {
         const maxH = baseMaxH - safety;
-        const result = paginateSimple(ansFiltered, aHeights, maxH);
-        const h = renderAnswerPages(result, bookName + ' — উত্তরপত্র', chapter, brand);
+        const pages = paginateSimple(ansFiltered, aHeights, maxH);
+        const h = renderAnswerPages(pages, bookName + ' — উত্তরপত্র', chapter, brand);
         if (!checkOverflow(h)) { finalHTML = h; break; }
         safety += 6;
-        if (safety > 60) { finalHTML = h; break; }
       }
-      html += finalHTML || '';
+      if (finalHTML === null) {
+        const pages = paginateSimple(ansFiltered, aHeights, baseMaxH - 72);
+        finalHTML = renderAnswerPages(pages, bookName + ' — উত্তরপত্র', chapter, brand);
+      }
+      html += finalHTML;
     }
   }
 
@@ -917,9 +906,11 @@ function paginateSimple(items, heights, maxColHeight) {
   let left = [], right = [];
   let lh = 0, rh = 0;
   let stage = 'L';
+
   for (let i = 0; i < items.length; i++) {
     const h = heights[i];
     const item = items[i];
+
     if (stage === 'L') {
       if (lh + h <= maxColHeight) { left.push(item); lh += h; continue; }
       stage = 'R';
@@ -928,6 +919,7 @@ function paginateSimple(items, heights, maxColHeight) {
       if (rh + h <= maxColHeight) { right.push(item); rh += h; continue; }
       if (left.length === 0 && right.length === 0) {
         pages.push({ left: [item], right: [] });
+        left = []; right = []; lh = 0; rh = 0; stage = 'L';
       } else {
         pages.push({ left, right });
         left = [item]; right = []; lh = h; rh = 0; stage = 'L';
@@ -982,6 +974,7 @@ function renderHeader(bookName, chapter) {
   </div>`;
 }
 
+/* ✅ উত্তরপত্রে শুধু প্রশ্ন + সঠিক উত্তর (অপশন নেই) */
 function renderAnswer(q) {
   const correct = q.options.find(o => o.correct);
   const ansHTML = correct
@@ -1117,7 +1110,7 @@ function loadBackup() {
 }
 
 /* ============================================================
-   প্রথম রেন্ডার (ফন্ট লোড হলে)
+   প্রথম রেন্ডার
    ============================================================ */
 if (document.fonts && document.fonts.ready) {
   document.fonts.ready.then(() => scheduleRender());
@@ -1126,4 +1119,4 @@ if (document.fonts && document.fonts.ready) {
 }
 </script>
 </body>
-  </html>
+          </html>
