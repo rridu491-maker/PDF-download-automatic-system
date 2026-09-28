@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCQ Book Builder — EDUZEN v15</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Mina:wght@400;700&family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@400;500;600;700;800&family=Anek+Bangla:wght@400;500;600;700;800&family=Atma:wght@400;500;600;700&family=Galada&family=Inter:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fs-q: 13px;
+    --fs-opt: 12px;
+    --fs-ans-q: 12px;
+    --fs-ans-a: 12px;
+    --page-font: 'Noto Serif Bengali', serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Hind Siliguri', sans-serif; background: #eef2f7; color: #1a1a1a; min-height: 100vh; }
+
+  .eduzen-logo { display: inline-flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: -0.5px; line-height: 1; }
+  .eduzen-logo svg { display: block; flex-shrink: 0; }
+  .eduzen-logo .edu { color: #0a2540; }
+  .eduzen-logo .zen { color: #0a66ff; }
+
+  .topbar { background: linear-gradient(135deg, #0a2540 0%, #0a3a80 50%, #0a66ff 100%); color: white; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 20px rgba(10,37,64,0.35); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
+  .topbar h1 { font-size: 16px; font-weight: 700; }
+  .topbar .brand { font-size: 10px; opacity: 0.8; letter-spacing: 2px; text-transform: uppercase; }
+  .btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn { padding: 9px 15px; border: none; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+  .btn-primary { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; box-shadow: 0 3px 12px rgba(245,158,11,0.4); }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-ghost { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.15); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.25); }
+
+  .container { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; max-width: 1700px; margin: 0 auto; }
+  @media (max-width: 1100px) { .container { grid-template-columns: 1fr; } }
+
+  .panel { background: white; border-radius: 14px; box-shadow: 0 4px 24px rgba(10,37,64,0.08); overflow: hidden; display: flex; flex-direction: column; }
+  .panel-head { padding: 12px 18px; background: linear-gradient(90deg, #f8fafc, #f1f5f9); border-bottom: 2px solid #e2e8f0; font-weight: 700; font-size: 13px; color: #0a2540; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .panel-head .hint { font-size: 11px; font-weight: 500; color: #64748b; }
+  .panel-head .hint em { color: #b45309; font-style: normal; font-weight: 700; }
+  .status-badge { font-size: 11px; padding: 3px 10px; border-radius: 12px; background: #d1fae5; color: #065f46; font-weight: 600; display: none; }
+  .status-badge.working { display: inline-block; background: #fef3c7; color: #b45309; }
+  .status-badge.error { display: inline-block; background: #fee2e2; color: #991b1b; }
+
+  .meta { padding: 14px 18px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .meta label { font-size: 10px; color: #64748b; font-weight: 700; display: block; margin-bottom: 4px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .meta input, .meta select { padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: inherit; font-size: 13px; width: 100%; transition: 0.15s; background: white; }
+  .meta input:focus, .meta select:focus { outline: none; border-color: #0a66ff; box-shadow: 0 0 0 3px rgba(10,102,255,0.12); }
+
+  .font-row { grid-column: span 2; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 12px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .font-ctrl { display: flex; flex-direction: column; gap: 3px; }
+  .font-ctrl label { font-size: 10px; color: #92400e; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; }
+  .font-ctrl .val { font-size: 11px; color: #b45309; font-weight: 700; text-align: right; }
+  .font-ctrl .row { display: flex; align-items: center; gap: 6px; }
+  .font-ctrl input[type="range"] { flex: 1; accent-color: #d97706; height: 4px; }
+
+  textarea { width: 100%; min-height: 420px; padding: 16px; border: none; font-family: 'Hind Siliguri', sans-serif; font-size: 14px; line-height: 1.75; resize: vertical; background: #fefefe; }
+  textarea:focus { outline: none; background: #fffdf5; }
+
+  .preview-wrap { padding: 20px; background: #e2e8f0; overflow: auto; max-height: 85vh; }
+
+  .page { width: 210mm; min-height: 296mm; padding: 5mm 4mm; background: #fffdf8; margin: 0 auto 24px; box-shadow: 0 8px 30px rgba(10,37,64,0.12); border-radius: 3px; position: relative; font-family: var(--page-font); page-break-after: always; }
+  @media (max-width: 900px) { .preview-wrap { padding: 20px 6px; } }
+
+  .page-frame { border: 2px solid #0a2540; padding: 10px 16px 12px; position: relative; height: 286mm; display: flex; flex-direction: column; background: #fffdf8; overflow: hidden; }
+  .page-frame::before { content: ""; position: absolute; inset: 4px; border: 1px solid #d4af37; pointer-events: none; border-radius: 1px; z-index: 1; }
+  .page-frame::after { content: "EDUZEN"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-22deg); font-family: 'Inter', sans-serif; font-weight: 900; font-size: 92px; letter-spacing: 10px; color: #0a2540; opacity: 0.03; pointer-events: none; z-index: 0; white-space: nowrap; user-select: none; }
+
+  .brand-banner, .page-header, .questions-area, .page-footer { position: relative; z-index: 2; }
+
+  .corner { position: absolute; width: 16px; height: 16px; border-color: #d4af37; border-style: solid; z-index: 2; }
+  .corner-tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+  .corner-tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+  .corner-bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+  .corner-br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+  .brand-banner { display: flex; align-items: center; justify-content: center; padding-bottom: 5px; margin-bottom: 6px; border-bottom: 1px solid #0a2540; position: relative; flex-shrink: 0; }
+  .brand-banner::after { content: ""; position: absolute; bottom: -2px; left: 35%; right: 35%; height: 2px; background: linear-gradient(90deg, transparent, #d4af37, transparent); }
+
+  .page-header { text-align: center; margin-bottom: 8px; flex-shrink: 0; }
+  .page-header h2 { font-size: 15px; color: #0a2540; font-weight: 800; letter-spacing: 0.3px; }
+  .page-header .chapter { font-size: 10px; color: #475569; margin-top: 1px; font-family: 'Hind Siliguri', sans-serif; font-weight: 500; }
+
+  .questions-area { display: flex; flex: 1; min-height: 0; overflow: hidden; gap: 0; }
+  .col { flex: 1; min-width: 0; min-height: 0; overflow: hidden; padding: 0 6px; }
+  .col-left { padding-left: 2px; padding-right: 10px; border-right: 1.5px solid #cbd5e1; }
+  .col-right { padding-left: 10px; padding-right: 2px; }
+
+  .q-item { margin-bottom: 9px; padding-bottom: 7px; border-bottom: 1px dashed #e2e8f0; }
+  .q-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .q-frag { margin-bottom: 0 !important; padding-bottom: 0 !important; border-bottom: none !important; }
+  .q-frag-head { margin-bottom: 0; padding-bottom: 0; }
+  .q-frag-end { margin-bottom: 9px; padding-bottom: 7px; border-bottom: 1px dashed #e2e8f0 !important; }
+  .col > .q-item:last-child { margin-bottom: 0 !important; padding-bottom: 0 !important; border-bottom: none !important; }
+
+  .q-frag.q-cont { padding-left: 14px; position: relative; }
+  .q-frag.q-cont::before { content: "↳"; position: absolute; left: -2px; top: 2px; color: #d4af37; font-size: 13px; font-weight: 700; font-family: 'Hind Siliguri', sans-serif; }
+
+  .q-head { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px; }
+
+  .q-num { background: #0a2540; color: #ffffff; font-weight: 700; font-size: 11px; min-width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'Inter', 'Hind Siliguri', sans-serif; border: 2px solid #d4af37; margin-top: 1px; }
+
+  .q-text { font-size: var(--fs-q); font-weight: 600; color: #0f172a; line-height: 1.38; padding-top: 3px; word-wrap: break-word; }
+
+  .statements-block { margin-left: 31px; margin-bottom: 4px; padding: 4px 8px; background: #fef9e7; border-left: 3px solid #f59e0b; border-radius: 4px; font-family: 'Hind Siliguri', sans-serif; font-size: calc(var(--fs-q) - 1px); line-height: 1.38; }
+  .stmt { display: flex; gap: 5px; margin-bottom: 2px; color: #334155; }
+  .stmt:last-child { margin-bottom: 0; }
+  .stmt-num { font-weight: 700; color: #b45309; min-width: 16px; flex-shrink: 0; }
+
+  .ar-block { margin-left: 31px; margin-bottom: 4px; padding: 4px 8px; background: #f0f9ff; border-left: 3px solid #0284c7; border-radius: 4px; font-family: 'Hind Siliguri', sans-serif; font-size: calc(var(--fs-q) - 1px); line-height: 1.38; }
+  .ar-line { margin-bottom: 2px; color: #334155; }
+  .ar-line:last-child { margin-bottom: 0; }
+  .ar-line strong { color: #0369a1; font-weight: 700; }
+
+  .matching-table { width: calc(100% - 31px); margin-left: 31px; margin-bottom: 4px; border-collapse: collapse; font-family: 'Hind Siliguri', sans-serif; font-size: calc(var(--fs-opt) - 1px); border: 1px solid #cbd5e1; border-radius: 4px; overflow: hidden; table-layout: fixed; }
+  .matching-table thead th { background: #0a2540; color: white; padding: 3px 6px; text-align: left; font-weight: 700; font-size: calc(var(--fs-opt) - 1px); }
+  .matching-table tbody td { padding: 2px 6px; border-top: 1px solid #e2e8f0; color: #334155; line-height: 1.35; word-break: break-word; }
+  .matching-table tbody tr:nth-child(even) td { background: #f8fafc; }
+  .matching-table tbody td:first-child { width: 48%; font-weight: 600; color: #0a2540; }
+
+  .sequence-list { margin-left: 31px; margin-bottom: 4px; padding: 4px 8px 4px 28px; background: #faf5ff; border-left: 3px solid #9333ea; border-radius: 4px; font-family: 'Hind Siliguri', sans-serif; font-size: calc(var(--fs-q) - 1px); line-height: 1.38; list-style-type: upper-alpha; }
+  .sequence-list li { margin-bottom: 1px; color: #334155; padding-left: 3px; }
+  .sequence-list li::marker { color: #7e22ce; font-weight: 700; }
+
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 6px; margin-left: 31px; font-family: 'Hind Siliguri', sans-serif; }
+  .opt { font-size: var(--fs-opt); color: #334155; line-height: 1.38; padding: 2px 5px; border-radius: 5px; word-wrap: break-word; }
+  .opt .letter { font-weight: 700; color: #0a2540; margin-right: 3px; }
+  .opt.correct { background: linear-gradient(135deg, #fff7d6 0%, #fde68a 100%); border-left: 3px solid #d4af37; color: #78350f; font-weight: 700; padding: 3px 6px; margin: -1px -1px; }
+  .opt.correct .letter { color: #b45309; }
+
+  .answer-section .page-frame { border-color: #064e3b; }
+  .answer-section .page-frame::before { border-color: #6ee7b7; }
+  .answer-section .page-frame::after { color: #064e3b; opacity: 0.035; }
+  .answer-section .corner { border-color: #6ee7b7; }
+  .answer-section .brand-banner { border-bottom-color: #064e3b; }
+  .answer-section .brand-banner::after { background: linear-gradient(90deg, transparent, #6ee7b7, transparent); }
+  .answer-section .page-header h2 { color: #064e3b; }
+  .answer-section .q-num { background: #064e3b; border-color: #6ee7b7; }
+
+  .answer-item { margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px dashed #d1fae5; display: flex; align-items: flex-start; gap: 6px; }
+  .answer-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .answer-content { flex: 1; min-width: 0; }
+  .answer-q { font-size: var(--fs-ans-q); color: #334155; line-height: 1.32; margin-bottom: 2px; font-weight: 500; word-wrap: break-word; }
+  .answer-a { display: inline-block; background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #064e3b; font-weight: 700; font-size: var(--fs-ans-a); padding: 2px 7px; border-radius: 4px; border-left: 3px solid #059669; font-family: 'Hind Siliguri', sans-serif; }
+  .answer-a .letter { color: #047857; margin-right: 3px; }
+  .answer-a.empty { background: #f1f5f9; color: #94a3b8; border-left-color: #cbd5e1; }
+
+  .section-title { text-align: center; margin: 30px auto 20px; max-width: 820px; }
+  .section-title span { display: inline-block; background: linear-gradient(135deg, #0a2540, #0a66ff); color: white; padding: 10px 32px; border-radius: 30px; font-weight: 700; font-size: 15px; letter-spacing: 2px; font-family: 'Hind Siliguri', sans-serif; box-shadow: 0 4px 16px rgba(10,102,255,0.35); }
+  .section-title.answer-title span { background: linear-gradient(135deg, #064e3b, #10b981); box-shadow: 0 4px 16px rgba(16,185,129,0.35); }
+
+  .page-footer { margin-top: auto; padding-top: 6px; border-top: 1.2px solid #0a2540; display: flex; justify-content: space-between; align-items: center; font-family: 'Hind Siliguri', sans-serif; position: relative; flex-shrink: 0; min-height: 30px; background: #fffdf8; z-index: 3; }
+  .page-footer::before { content: ""; position: absolute; top: -2px; left: 35%; right: 35%; height: 2px; background: linear-gradient(90deg, transparent, #d4af37, transparent); }
+  .answer-section .page-footer { border-top-color: #064e3b; }
+  .answer-section .page-footer::before { background: linear-gradient(90deg, transparent, #6ee7b7, transparent); }
+
+  .page-num-badge { display: inline-flex; align-items: center; gap: 6px; background: #0a2540; color: white; padding: 3px 11px; border-radius: 18px; border: 1.5px solid #d4af37; font-weight: 700; flex-shrink: 0; }
+  .answer-section .page-num-badge { background: #064e3b; border-color: #6ee7b7; }
+  .page-num-badge .lbl { font-size: 9px; opacity: 0.9; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+  .page-num-badge .num { font-size: 13px; font-weight: 800; font-family: 'Noto Serif Bengali', 'Inter', serif; letter-spacing: 0.4px; }
+
+  .measure-area { position: fixed; left: -99999px; top: 0; width: 210mm; visibility: hidden; pointer-events: none; z-index: -1; }
+
+  @media print {
+    @page { size: A4; margin: 0; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    html, body { background: white !important; margin: 0 !important; padding: 0 !important; width: 210mm; }
+    .topbar, .panel-head, .meta, .panel:first-child, .section-title, .measure-area { display: none !important; }
+    .container { display: block !important; padding: 0 !important; margin: 0 !important; max-width: none !important; gap: 0 !important; }
+    .panel { box-shadow: none !important; border-radius: 0 !important; overflow: visible !important; background: transparent !important; }
+    .preview-wrap { padding: 0 !important; max-height: none !important; background: white !important; overflow: visible !important; }
+
+    .page { width: 210mm !important; min-height: 297mm !important; height: 297mm !important; padding: 5mm 4mm !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none !important; background: #fffdf8 !important; page-break-after: always; page-break-inside: avoid; overflow: hidden; }
+    .page:last-child { page-break-after: auto; }
+    .page-frame { height: 287mm !important; min-height: 0 !important; padding: 10px 16px 12px !important; border: 2px solid #0a2540 !important; background: #fffdf8 !important; }
+
+    .page-frame::before { border-color: #d4af37 !important; }
+    .page-frame::after { color: #0a2540 !important; opacity: 0.03 !important; }
+    .corner { border-color: #d4af37 !important; }
+    .brand-banner { border-bottom-color: #0a2540 !important; }
+    .brand-banner::after { background: linear-gradient(90deg, transparent, #d4af37, transparent) !important; }
+    .q-num { background: #0a2540 !important; color: #ffffff !important; border-color: #d4af37 !important; }
+    .opt.correct { background: linear-gradient(135deg, #fff7d6 0%, #fde68a 100%) !important; border-left: 3px solid #d4af37 !important; color: #78350f !important; }
+    .opt.correct .letter { color: #b45309 !important; }
+    .statements-block { background: #fef9e7 !important; border-left-color: #f59e0b !important; }
+    .stmt-num { color: #b45309 !important; }
+    .ar-block { background: #f0f9ff !important; border-left-color: #0284c7 !important; }
+    .ar-line strong { color: #0369a1 !important; }
+    .matching-table thead th { background: #0a2540 !important; color: #fff !important; }
+    .matching-table tbody tr:nth-child(even) td { background: #f8fafc !important; }
+    .sequence-list { background: #faf5ff !important; border-left-color: #9333ea !important; }
+    .q-frag.q-cont::before { color: #d4af37 !important; }
+
+    .page-num-badge { background: #0a2540 !important; color: #ffffff !important; border-color: #d4af37 !important; }
+    .page-footer { border-top-color: #0a2540 !important; background: #fffdf8 !important; }
+    .page-footer::before { background: linear-gradient(90deg, transparent, #d4af37, transparent) !important; }
+    .eduzen-logo .edu { color: #0a2540 !important; }
+    .eduzen-logo .zen { color: #0a66ff !important; }
+
+    .answer-section .page-frame { border-color: #064e3b !important; }
+    .answer-section .page-frame::before { border-color: #6ee7b7 !important; }
+    .answer-section .page-frame::after { color: #064e3b !important; }
+    .answer-section .corner { border-color: #6ee7b7 !important; }
+    .answer-section .brand-banner { border-bottom-color: #064e3b !important; }
+    .answer-section .brand-banner::after { background: linear-gradient(90deg, transparent, #6ee7b7, transparent) !important; }
+    .answer-section .page-header h2 { color: #064e3b !important; }
+    .answer-section .q-num { background: #064e3b !important; border-color: #6ee7b7 !important; }
+    .answer-section .page-num-badge { background: #064e3b !important; border-color: #6ee7b7 !important; }
+    .answer-section .page-footer { border-top-color: #064e3b !important; }
+    .answer-section .page-footer::before { background: linear-gradient(90deg, transparent, #6ee7b7, transparent) !important; }
+    .answer-a { background: linear-gradient(135deg, #d1fae5, #a7f3d0) !important; color: #064e3b !important; border-left: 3px solid #059669 !important; }
+    .answer-a .letter { color: #047857 !important; }
+    .answer-a.empty { background: #f1f5f9 !important; color: #94a3b8 !important; border-left-color: #cbd5e1 !important; }
+  }
+
+  @media (max-width: 600px) {
+    .questions-area { flex-direction: column; }
+    .col-left { border-right: none; border-bottom: 1.5px solid #cbd5e1; padding: 0 0 10px; }
+    .col-right { padding: 10px 0 0; }
+    .font-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <h1>📘 MCQ Book Builder — EDUZEN v15</h1>
+    <div class="brand">Table-Atomic • Smart Continuation</div>
+  </div>
+  <div class="btns">
+    <button class="btn btn-ghost" onclick="saveToBrowser()">💾 সেভ</button>
+    <button class="btn btn-ghost" onclick="downloadBackup()">⬇ ব্যাকআপ</button>
+    <button class="btn btn-ghost" onclick="loadBackup()">⬆ রিস্টোর</button>
+    <button class="btn btn-primary" onclick="window.print()">🖨️ PDF ডাউনলোড</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="panel">
+    <div class="panel-head">
+      <span>✍️ এখানে লিখো / পেস্ট করো</span>
+      <span class="status-badge" id="statusBadge"></span>
+      <span class="hint">সঠিক উত্তরের <em>শেষে *</em></span>
+    </div>
+    <div class="meta">
+      <div>
+        <label>বইয়ের নাম</label>
+        <input id="bookName" value="স্নায়ুযুদ্ধ ও আন্তর্জাতিক সম্পর্ক" oninput="scheduleRender()">
+      </div>
+      <div>
+        <label>অধ্যায়</label>
+        <input id="chapterName" value="ঠান্ডা লড়াই ও জোট নিরপেক্ষ আন্দোলন" oninput="scheduleRender()">
+      </div>
+      <div>
+        <label>ব্র্যান্ড / ওয়েবসাইট</label>
+        <input id="brandName" value="EDUZEN" oninput="scheduleRender()">
+      </div>
+      <div>
+        <label>ঘনত্ব</label>
+        <select id="density" onchange="scheduleRender()">
+          <option value="extra-tight">অতি ঘন</option>
+          <option value="tight">ঘন</option>
+          <option value="normal" selected>স্বাভাবিক</option>
+          <option value="loose">হালকা</option>
+        </select>
+      </div>
+      <div>
+        <label>মোড</label>
+        <select id="mode" onchange="scheduleRender()">
+          <option value="both" selected>প্রশ্ন + উত্তরপত্র</option>
+          <option value="questions">শুধু প্রশ্ন</option>
+          <option value="answers">শুধু উত্তরপত্র</option>
+        </select>
+      </div>
+      <div>
+        <label>ফন্ট প্রিসেট</label>
+        <select id="preset" onchange="applyPreset()">
+          <option value="small">ছোট</option>
+          <option value="medium" selected>মাঝারি</option>
+          <option value="large">বড়</option>
+          <option value="custom">কাস্টম</option>
+        </select>
+      </div>
+
+      <div style="grid-column: span 2;">
+        <label>📖 পাতার বাংলা ফন্ট</label>
+        <select id="fontFamily" onchange="applyFontFamily()">
+          <option value="'Noto Serif Bengali', serif" selected>Noto Serif Bengali — ক্লাসিক</option>
+          <option value="'Hind Siliguri', sans-serif">Hind Siliguri — স্যান্স</option>
+          <option value="'Mukta', sans-serif">Mukta — আধুনিক</option>
+          <option value="'Mina', sans-serif">Mina — কমপ্যাক্ট</option>
+          <option value="'Tiro Bangla', serif">Tiro Bangla — এলিগ্যান্ট</option>
+          <option value="'Baloo Da 2', cursive">Baloo Da 2 — রাউন্ডেড</option>
+          <option value="'Anek Bangla', sans-serif">Anek Bangla — স্টাইলিশ</option>
+          <option value="'Atma', cursive">Atma — ব্রাশ</option>
+          <option value="'Galada', cursive">Galada — ডেকোরেটিভ</option>
+        </select>
+      </div>
+
+      <div class="font-row">
+        <div class="font-ctrl">
+          <div class="row"><label style="flex:1;">প্রশ্ন</label><span class="val" id="valQ">13px</span></div>
+          <input type="range" id="fsQ" min="9" max="20" value="13" step="1" oninput="customFont()">
+        </div>
+        <div class="font-ctrl">
+          <div class="row"><label style="flex:1;">অপশন</label><span class="val" id="valOpt">12px</span></div>
+          <input type="range" id="fsOpt" min="8" max="18" value="12" step="1" oninput="customFont()">
+        </div>
+        <div class="font-ctrl">
+          <div class="row"><label style="flex:1;">উত্তরপত্র</label><span class="val" id="valAns">12px</span></div>
+          <input type="range" id="fsAns" min="8" max="18" value="12" step="1" oninput="customFont()">
+        </div>
+      </div>
+    </div>
+    <textarea id="editor" oninput="scheduleRender()" placeholder="এখানে প্রশ্নগুলো লিখো..."></textarea>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <span>👁️ লাইভ প্রিভিউ (A4 সাইজ)</span>
+      <span class="hint">Table-Atomic flow</span>
+    </div>
+    <div class="preview-wrap" id="preview"></div>
+  </div>
+</div>
+
+<div class="measure-area" id="measureArea"></div>
+
+<script>
+/* ========== EDUZEN লোগো ========== */
+function eduzenLogo(size = 26) {
+  return `
+    <span class="eduzen-logo">
+      <svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="eduzenG1_${size}" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#10b981"/>
+            <stop offset="100%" stop-color="#0a66ff"/>
+          </linearGradient>
+          <linearGradient id="eduzenG2_${size}" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#0a3a80"/>
+            <stop offset="100%" stop-color="#0a66ff"/>
+          </linearGradient>
+        </defs>
+        <path d="M9 6 Q14 2 18 6 Q22 11 16 16 Q11 20 15 25 Q10 22 12 15 Q6 15 8 9 Z" fill="url(#eduzenG1_${size})"/>
+        <circle cx="27" cy="8" r="3.5" fill="#10b981"/>
+        <path d="M6 34 Q14 28 22 30 L25 36 L7 36 Z" fill="url(#eduzenG2_${size})"/>
+        <path d="M12 29 Q18 25 24 27 L22 31 Q16 29 12 29 Z" fill="#0a66ff" opacity="0.85"/>
+      </svg>
+      <span style="font-size: ${size * 0.95}px;">
+        <span class="edu">EDU</span><span class="zen">ZEN</span>
+      </span>
+    </span>
+  `;
+}
+
+/* ========== ডিফল্ট ডেটা ========== */
+const DEFAULT_TEXT = `১. দ্বিতীয় বিশ্বযুদ্ধ পরবর্তী আন্তর্জাতিক রাজনীতিতে 'ঠান্ডা লড়াই' বা 'Cold War' শব্দটি প্রথম কে প্রয়োগ করেন?
+ক) উইনস্টন চার্চিল
+খ) বার্নার্ড বার্চ
+গ) হ্যারি ট্রুম্যান
+ঘ) ওয়াল্টার লিপম্যান
+
+২. 'লৌহ যবনিকা' (Iron Curtain) তত্ত্বটি ১৯৪৬ সালে কে তাঁর বক্তৃতায় প্রথম উল্লেখ করেন?
+ক) ফ্র্যাংক্লিন রুজভেল্ট
+খ) হ্যারি ট্রুম্যান
+গ) উইনস্টন চার্চিল
+ঘ) জোসেফ স্ট্যালিন
+
+৩. জোট নিরপেক্ষ আন্দোলনের (NAM) প্রথম শীর্ষ সম্মেলন ১৯৬১ সালে কোথায় অনুষ্ঠিত হয়েছিল?
+ক) কায়রো
+খ) নিউ দিল্লি
+গ) বেলগ্রেড
+ঘ) বান্দুং
+
+৪. ১৯৫৫ সালে অনুষ্ঠিত 'বান্দুং সম্মেলন'-এ এশিয়া ও আফ্রিকার কতগুলি রাষ্ট্র অংশগ্রহণ করেছিল?
+ক) ২৩টি
+খ) ২৯টি
+গ) ৩০টি
+ঘ) ৩৫টি
+
+৫. ঠান্ডা লড়াইয়ের সবচেয়ে বিপজ্জনক মুহূর্ত কিউবা ক্ষেপণাস্ত্র সংকট কোন সালে দেখা দেয়?
+ক) ১৯৬০
+খ) ১৯৬৪
+গ) ১৯৬২
+ঘ) ১৯৬৩`;
+
+document.getElementById('editor').value =
+  localStorage.getItem('mcq_text') || DEFAULT_TEXT;
+
+/* ========== পার্সার ========== */
+const BN_LETTERS = ['ক','খ','গ','ঘ','ঙ'];
+
+function parseQuestions(text) {
+  const blocks = text.trim().split(/\n\s*\n/);
+  const list = [];
+
+  for (const block of blocks) {
+    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+    if (lines.length < 2) continue;
+
+    let firstLine = lines[0], qNum = '', qText = '';
+    const nm = firstLine.match(/^([০-৯0-9]+)\s*[.)।]\s*(.+)$/);
+    if (nm) { qNum = nm[1]; qText = nm[2]; }
+    else { qNum = bnNum(list.length + 1); qText = firstLine; }
+
+    let assertion = '', reason = '';
+    const aInFirst = qText.match(/Assertion\s*\(A\)\s*[:।]\s*(.+)/i);
+    if (aInFirst) {
+      assertion = aInFirst[1].trim();
+      qText = 'নিচের Assertion-Reason বিবেচনা করো:';
+    }
+
+    const optionLines = [];
+    const contentLines = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i];
+      if (new RegExp('^[' + BN_LETTERS.join('') + '][.)]\\s').test(line)) {
+        optionLines.push(line); continue;
+      }
+      const aMatch = line.match(/^Assertion\s*\(A\)\s*[:।]\s*(.+)$/i);
+      const rMatch = line.match(/^Reason\s*\(R\)\s*[:।]\s*(.+)$/i);
+      if (aMatch) { assertion = aMatch[1].trim(); continue; }
+      if (rMatch) { reason = rMatch[1].trim(); continue; }
+      contentLines.push(line);
+    }
+
+    let type = 'standard';
+    let matchingRows = [], sequenceSteps = [], statements = [];
+
+    if (assertion || reason) {
+      type = 'assertion';
+    } else if (contentLines.some(l => /Column\s*A/i.test(l) && /Column\s*B/i.test(l))) {
+      type = 'matching';
+      for (const line of contentLines) {
+        if (/Column\s*A|Column\s*B/i.test(line)) continue;
+        const parts = line.split(/\s{2,}/);
+        if (parts.length >= 2) {
+          const colA = parts[0].trim();
+          const colB = parts.slice(1).join(' ').trim();
+          if (/^\([ivxIVX0-9]+\)/.test(colA) && /^\([ivxIVX0-9]+\)/.test(colB)) {
+            matchingRows.push({ left: colA, right: colB }); continue;
+          }
+        }
+        const mm = line.match(/^(\([ivxIVX0-9]+\)\s*.*?)\s+(\([ivxIVX0-9]+\)\s*.*)$/);
+        if (mm) matchingRows.push({ left: mm[1].trim(), right: mm[2].trim() });
+      }
+      if (!matchingRows.length) type = 'standard';
+    } else {
+      const seqMatches = contentLines
+        .map(l => l.match(/^\(?([A-D])[.)]\s*(.+)$/)).filter(Boolean);
+      if (seqMatches.length >= 3) {
+        type = 'sequence';
+        for (const m of seqMatches) sequenceSteps.push({ letter: m[1], text: m[2].trim() });
+      } else {
+        const stmtMatches = contentLines
+          .map(l => l.match(/^(i{1,3}|iv|v)\.\s*(.+)$/i)).filter(Boolean);
+        if (stmtMatches.length >= 2) {
+          type = 'statements';
+          statements = stmtMatches.map(m => ({ num: m[1].toLowerCase(), text: m[2].trim() }));
+        }
+      }
+    }
+
+    const options = [];
+    for (const line of optionLines) {
+      const om = line.match(/^([কখগঘঙ])[.)]\s*(.+)$/);
+      if (!om) continue;
+      let optText = om[2].trim();
+      let correct = false;
+      if (optText.includes('*')) {
+        correct = true;
+        optText = optText.replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+      }
+      options.push({ letter: om[1], text: optText, correct });
+    }
+
+    list.push({ num: qNum, text: qText, type, options, matchingRows, sequenceSteps, statements, assertion, reason });
+  }
+  return list;
+}
+
+function bnNum(n) {
+  const d = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+  return String(n).split('').map(c => d[+c] || c).join('');
+}
+
+/* ========== 🧩 Fragments with Table-Atomic rule ========== */
+function breakQuestionIntoFragments(q) {
+  const frags = [];
+  const qid = 'q_' + q.num + '_' + Math.random().toString(36).slice(2, 7);
+
+  // Body HTML
+  let bodyHTML = '';
+  if (q.type === 'statements') {
+    bodyHTML = `<div class="statements-block">${q.statements.map(s =>
+      `<div class="stmt"><span class="stmt-num">${escapeHtml(s.num)}.</span><span class="stmt-text">${escapeHtml(s.text)}</span></div>`
+    ).join('')}</div>`;
+  } else if (q.type === 'assertion') {
+    bodyHTML = `<div class="ar-block">
+      ${q.assertion ? `<div class="ar-line"><strong>Assertion (A):</strong> ${escapeHtml(q.assertion)}</div>` : ''}
+      ${q.reason ? `<div class="ar-line"><strong>Reason (R):</strong> ${escapeHtml(q.reason)}</div>` : ''}
+    </div>`;
+  } else if (q.type === 'matching') {
+    bodyHTML = `<table class="matching-table">
+      <thead><tr><th>Column A</th><th>Column B</th></tr></thead>
+      <tbody>${q.matchingRows.map(r =>
+        `<tr><td>${escapeHtml(r.left)}</td><td>${escapeHtml(r.right)}</td></tr>`
+      ).join('')}</tbody>
+    </table>`;
+  } else if (q.type === 'sequence') {
+    bodyHTML = `<ol class="sequence-list">${q.sequenceSteps.map(s =>
+      `<li>${escapeHtml(s.text)}</li>`
+    ).join('')}</ol>`;
+  }
+
+  // ============ ✅ MATCHING = ATOMIC (পুরোটা একসাথে) ============
+  if (q.type === 'matching') {
+    frags.push({
+      qid, qNum: q.num, isHead: true, isEnd: true, atomic: true,
+      html: `<div class="q-item">
+        <div class="q-head">
+          <div class="q-num">${escapeHtml(q.num)}</div>
+          <div class="q-text">${escapeHtml(q.text)}</div>
+        </div>
+        ${bodyHTML}
+        <div class="options">
+          ${q.options.map(o => `<div class="opt ${o.correct ? 'correct' : ''}"><span class="letter">${escapeHtml(o.letter)})</span>${escapeHtml(o.text)}</div>`).join('')}
+        </div>
+      </div>`
+    });
+    return frags;
+  }
+
+  // ============ সাধারণ প্রশ্ন: ভাঙা যাবে ============
+  // Fragment 1: q-head + body
+  frags.push({
+    qid, qNum: q.num, isHead: true, isEnd: false,
+    html: `<div class="q-item q-frag q-frag-head">
+      <div class="q-head">
+        <div class="q-num">${escapeHtml(q.num)}</div>
+        <div class="q-text">${escapeHtml(q.text)}</div>
+      </div>
+      ${bodyHTML}
+    </div>`
+  });
+
+  // Fragment 2, 3: প্রতি সারিতে ২টি অপশন
+  const opts = q.options;
+  const rowCount = Math.ceil(opts.length / 2);
+  for (let r = 0; r < rowCount; r++) {
+    const rowOpts = opts.slice(r * 2, r * 2 + 2);
+    const isLast = (r === rowCount - 1);
+    frags.push({
+      qid, qNum: q.num, isHead: false, isEnd: isLast,
+      html: `<div class="q-item q-frag${isLast ? ' q-frag-end' : ''}">
+        <div class="options">
+          ${rowOpts.map(o => `<div class="opt ${o.correct ? 'correct' : ''}"><span class="letter">${escapeHtml(o.letter)})</span>${escapeHtml(o.text)}</div>`).join('')}
+        </div>
+      </div>`
+    });
+  }
+
+  return frags;
+}
+
+/* ========== Probe Available Height ========== */
+function probeAvailableHeight() {
+  const probe = document.createElement('div');
+  probe.style.cssText = 'position:fixed;left:-99999px;top:0;width:210mm;visibility:hidden;pointer-events:none;';
+  probe.className = 'page';
+  probe.innerHTML = `
+    <div class="page-frame">
+      ${renderBrandBanner('EDUZEN')}
+      ${renderHeader('Probe', 'Probe')}
+      <div class="questions-area" id="probeArea">
+        <div class="col col-left"></div>
+        <div class="col col-right"></div>
+      </div>
+      ${renderFooter('EDUZEN', 1, 1)}
+    </div>
+  `;
+  document.body.appendChild(probe);
+  const h = probe.querySelector('#probeArea').getBoundingClientRect().height;
+  document.body.removeChild(probe);
+  return Math.floor(h) - 8;
+}
+
+/* ========== 📏 Measure items ========== */
+function measureItems(items, renderer) {
+  const area = document.getElementById('measureArea');
+  area.innerHTML = `
+    <div class="page">
+      <div class="page-frame" style="height:auto;min-height:0;">
+        <div class="questions-area">
+          <div class="col col-left" id="mCol"></div>
+          <div class="col col-right"></div>
+        </div>
+      </div>
+    </div>
+  `;
+  const col = area.querySelector('#mCol');
+  const heights = [];
+
+  for (const item of items) {
+    col.innerHTML = renderer(item);
+    const el = col.firstElementChild;
+    if (!el) { heights.push(0); continue; }
+    const h = el.getBoundingClientRect().height;
+    const style = window.getComputedStyle(el);
+    const mb = parseFloat(style.marginBottom) || 0;
+    heights.push(Math.ceil(h + mb));
+  }
+
+  area.innerHTML = '';
+  return heights;
+}
+
+/* ========== ⚖️ Pagination with fragment tracking ========== */
+function paginate(fragments, heights, maxColHeight) {
+  const pages = [];
+  const positions = new Map();
+  let left = [], right = [];
+  let lh = 0, rh = 0;
+  let stage = 'L';
+  let pageNum = 0;
+
+  for (let i = 0; i < fragments.length; i++) {
+    const h = heights[i];
+    const item = { frag: fragments[i], idx: i };
+
+    if (stage === 'L') {
+      if (lh + h <= maxColHeight) {
+        left.push(item);
+        positions.set(i, { page: pageNum, col: 'L' });
+        lh += h;
+        continue;
+      }
+      stage = 'R';
+    }
+
+    if (stage === 'R') {
+      if (rh + h <= maxColHeight) {
+        right.push(item);
+        positions.set(i, { page: pageNum, col: 'R' });
+        rh += h;
+        continue;
+      }
+      if (left.length === 0 && right.length === 0) {
+        pages.push({ left: [item], right: [] });
+        positions.set(i, { page: pageNum, col: 'L' });
+        pageNum++;
+      } else {
+        pages.push({ left, right });
+        pageNum++;
+        left = [item]; right = [];
+        positions.set(i, { page: pageNum, col: 'L' });
+        lh = h; rh = 0;
+        stage = 'L';
+      }
+    }
+  }
+
+  if (left.length || right.length) pages.push({ left, right });
+  return { pages, positions };
+}
+
+/* ========== 🎨 Render pages with continuation markers ========== */
+function renderFragmentsWithContinuity(result) {
+  const { pages, positions } = result;
+  let html = '';
+
+  pages.forEach((pg, pageIdx) => {
+    // Left column
+    let leftHTML = '';
+    pg.left.forEach(item => {
+      const idx = item.idx;
+      const prevIdx = idx - 1;
+      const prevPos = positions.get(prevIdx);
+      const currPos = positions.get(idx);
+      const prevFragSameQ = (idx > 0 && result._fragments[prevIdx] && result._fragments[prevIdx].qid === item.frag.qid);
+      const inDiffPos = prevPos && currPos && (prevPos.page !== currPos.page || prevPos.col !== currPos.col);
+      const isCont = prevFragSameQ && inDiffPos && !item.frag.isHead;
+
+      let fragHtml = item.frag.html;
+      if (isCont) {
+        fragHtml = fragHtml.replace('class="q-item q-frag', 'class="q-item q-frag q-cont');
+      }
+      leftHTML += fragHtml;
+    });
+
+    // Right column
+    let rightHTML = '';
+    pg.right.forEach(item => {
+      const idx = item.idx;
+      const prevIdx = idx - 1;
+      const prevPos = positions.get(prevIdx);
+      const currPos = positions.get(idx);
+      const prevFragSameQ = (idx > 0 && result._fragments[prevIdx] && result._fragments[prevIdx].qid === item.frag.qid);
+      const inDiffPos = prevPos && currPos && (prevPos.page !== currPos.page || prevPos.col !== currPos.col);
+      const isCont = prevFragSameQ && inDiffPos && !item.frag.isHead;
+
+      let fragHtml = item.frag.html;
+      if (isCont) {
+        fragHtml = fragHtml.replace('class="q-item q-frag', 'class="q-item q-frag q-cont');
+      }
+      rightHTML += fragHtml;
+    });
+
+    html += `
+      <div class="page">
+        <div class="page-frame">
+          <span class="corner corner-tl"></span>
+          <span class="corner corner-tr"></span>
+          <span class="corner corner-bl"></span>
+          <span class="corner corner-br"></span>
+          ${renderBrandBanner(result._brand)}
+          ${renderHeader(result._bookName, result._chapter)}
+          <div class="questions-area">
+            <div class="col col-left">${leftHTML}</div>
+            <div class="col col-right">${rightHTML}</div>
+          </div>
+          ${renderFooter(result._brand, pageIdx + 1, pages.length)}
+        </div>
+      </div>
+    `;
+  });
+
+  return html;
+}
+
+/* ========== Check overflow ========== */
+function checkOverflow(html) {
+  const temp = document.createElement('div');
+  temp.style.cssText = 'position:fixed;left:-99999px;top:0;width:210mm;';
+  temp.innerHTML = html;
+  document.body.appendChild(temp);
+  let hasOverflow = false;
+  temp.querySelectorAll('.col').forEach(col => {
+    if (col.scrollHeight > col.clientHeight + 2) hasOverflow = true;
+  });
+  document.body.removeChild(temp);
+  return hasOverflow;
+}
+
+/* ========== Base max height ========== */
+let PROBED_MAX_HEIGHT = null;
+
+function getBaseMaxHeight(density) {
+  const base = PROBED_MAX_HEIGHT || 900;
+  let factor = 0.96;
+  if (density === 'extra-tight') factor = 0.98;
+  else if (density === 'tight') factor = 0.96;
+  else if (density === 'normal') factor = 0.94;
+  else if (density === 'loose') factor = 0.88;
+  return Math.floor(base * factor);
+}
+
+/* ========== ডিবাউন্স ========== */
+let renderTimer = null;
+function scheduleRender() {
+  const badge = document.getElementById('statusBadge');
+  badge.classList.remove('error');
+  badge.classList.add('working');
+  badge.textContent = '⏳ আপডেট...';
+  clearTimeout(renderTimer);
+  renderTimer = setTimeout(() => {
+    try {
+      const t0 = performance.now();
+      render();
+      const dt = performance.now() - t0;
+      badge.classList.remove('working');
+      badge.textContent = `✅ ${Math.round(dt)}ms`;
+      setTimeout(() => { badge.textContent = ''; }, 1800);
+    } catch (err) {
+      badge.classList.remove('working');
+      badge.classList.add('error');
+      badge.textContent = '❌ ' + err.message;
+      console.error(err);
+    }
+  }, 300);
+}
+
+/* ========== Render ========== */
+function render() {
+  const text = document.getElementById('editor').value;
+  const bookName = document.getElementById('bookName').value || 'MCQ';
+  const chapter = document.getElementById('chapterName').value || '';
+  const brand = document.getElementById('brandName').value || 'EDUZEN';
+  const mode = document.getElementById('mode').value;
+  const density = document.getElementById('density').value;
+
+  if (PROBED_MAX_HEIGHT === null) {
+    PROBED_MAX_HEIGHT = probeAvailableHeight();
+  }
+  const baseMaxH = getBaseMaxHeight(density);
+
+  localStorage.setItem('mcq_text', text);
+  const questions = parseQuestions(text);
+  const preview = document.getElementById('preview');
+
+  if (!questions.length) {
+    preview.innerHTML = '<div class="page"><div class="page-frame"><p style="text-align:center;color:#94a3b8;padding:60px 0;">এখনো কোনো প্রশ্ন লেখা হয়নি...</p></div></div>';
+    return;
+  }
+
+  let html = '';
+
+  /* -------- প্রশ্ন সেকশন -------- */
+  if (mode === 'both' || mode === 'questions') {
+    const fragments = questions.flatMap(breakQuestionIntoFragments);
+    const heights = measureItems(fragments, f => f.html);
+
+    let safety = 0;
+    let finalHTML = null;
+    for (let iter = 0; iter < 10; iter++) {
+      const maxH = baseMaxH - safety;
+      const result = paginate(fragments, heights, maxH);
+      result._fragments = fragments;
+      result._brand = brand;
+      result._bookName = bookName;
+      result._chapter = chapter;
+
+      const h = renderFragmentsWithContinuity(result);
+      if (!checkOverflow(h)) { finalHTML = h; break; }
+      safety += 6;
+      if (safety > 60) { finalHTML = h; break; }
+    }
+    html += finalHTML || '';
+  }
+
+  /* -------- উত্তরপত্র -------- */
+  if (mode === 'both' || mode === 'answers') {
+    const ansFiltered = questions.filter(q => q.type === 'standard' || q.type === 'statements');
+    if (ansFiltered.length) {
+      html += `<div class="section-title answer-title"><span>📝 উত্তরপত্র</span></div>`;
+      const aHeights = measureItems(ansFiltered, renderAnswer);
+
+      let safety = 0;
+      let finalHTML = null;
+      for (let iter = 0; iter < 10; iter++) {
+        const maxH = baseMaxH - safety;
+        const result = paginateSimple(ansFiltered, aHeights, maxH);
+        const h = renderAnswerPages(result, bookName + ' — উত্তরপত্র', chapter, brand);
+        if (!checkOverflow(h)) { finalHTML = h; break; }
+        safety += 6;
+        if (safety > 60) { finalHTML = h; break; }
+      }
+      html += finalHTML || '';
+    }
+  }
+
+  preview.innerHTML = html;
+}
+
+/* ========== Simple pagination for answers ========== */
+function paginateSimple(items, heights, maxColHeight) {
+  const pages = [];
+  let left = [], right = [];
+  let lh = 0, rh = 0;
+  let stage = 'L';
+  for (let i = 0; i < items.length; i++) {
+    const h = heights[i];
+    const item = items[i];
+    if (stage === 'L') {
+      if (lh + h <= maxColHeight) { left.push(item); lh += h; continue; }
+      stage = 'R';
+    }
+    if (stage === 'R') {
+      if (rh + h <= maxColHeight) { right.push(item); rh += h; continue; }
+      if (left.length === 0 && right.length === 0) {
+        pages.push({ left: [item], right: [] });
+      } else {
+        pages.push({ left, right });
+        left = [item]; right = []; lh = h; rh = 0; stage = 'L';
+      }
+    }
+  }
+  if (left.length || right.length) pages.push({ left, right });
+  return pages;
+}
+
+function renderAnswerPages(pages, bookName, chapter, brand) {
+  let html = '';
+  pages.forEach((pg, idx) => {
+    html += `
+      <div class="answer-section">
+        <div class="page">
+          <div class="page-frame">
+            <span class="corner corner-tl"></span>
+            <span class="corner corner-tr"></span>
+            <span class="corner corner-bl"></span>
+            <span class="corner corner-br"></span>
+            ${renderBrandBanner(brand)}
+            ${renderHeader(bookName, chapter)}
+            <div class="questions-area">
+              <div class="col col-left">${pg.left.map(renderAnswer).join('')}</div>
+              <div class="col col-right">${pg.right.map(renderAnswer).join('')}</div>
+            </div>
+            ${renderFooter(brand, idx + 1, pages.length)}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  return html;
+}
+
+/* ========== Renderers ========== */
+function renderBrandBanner(brand) {
+  const isEduzen = brand.trim().toLowerCase().includes('eduzen');
+  const logoHTML = isEduzen
+    ? eduzenLogo(22)
+    : `<span style="font-family:'Inter',sans-serif;font-weight:900;color:#0a2540;letter-spacing:-0.3px;font-size:20px;">${escapeHtml(brand)}</span>`;
+  return `<div class="brand-banner">${logoHTML}</div>`;
+}
+
+function renderHeader(bookName, chapter) {
+  return `<div class="page-header">
+    <h2>${escapeHtml(bookName)}</h2>
+    ${chapter ? `<div class="chapter">${escapeHtml(chapter)}</div>` : ''}
+  </div>`;
+}
+
+function renderAnswer(q) {
+  const correct = q.options.find(o => o.correct);
+  const ansHTML = correct
+    ? `<div class="answer-a"><span class="letter">${escapeHtml(correct.letter)})</span>${escapeHtml(correct.text)}</div>`
+    : `<div class="answer-a empty">উত্তর চিহ্নিত করা হয়নি (*)</div>`;
+  return `<div class="answer-item">
+    <div class="q-num">${escapeHtml(q.num)}</div>
+    <div class="answer-content">
+      <div class="answer-q">${escapeHtml(q.text)}</div>
+      ${ansHTML}
+    </div>
+  </div>`;
+}
+
+function renderFooter(brand, current, total) {
+  const isEduzen = brand.trim().toLowerCase().includes('eduzen');
+  const brandHTML = isEduzen
+    ? `<span>${eduzenLogo(13)}</span>`
+    : `<span style="font-weight:700;color:#0a2540;font-size:10px;">${escapeHtml(brand)}</span>`;
+  return `<div class="page-footer">
+    ${brandHTML}
+    <span class="page-num-badge">
+      <span class="lbl">পৃষ্ঠা</span>
+      <span class="num">${bnNum(current)} / ${bnNum(total)}</span>
+    </span>
+  </div>`;
+}
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g,
+    c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+}
+
+/* ========== ফন্ট ========== */
+function setFonts(q, o, a) {
+  document.getElementById('fsQ').value = q;
+  document.getElementById('fsOpt').value = o;
+  document.getElementById('fsAns').value = a;
+  document.documentElement.style.setProperty('--fs-q', q + 'px');
+  document.documentElement.style.setProperty('--fs-opt', o + 'px');
+  document.documentElement.style.setProperty('--fs-ans-q', a + 'px');
+  document.documentElement.style.setProperty('--fs-ans-a', a + 'px');
+  document.getElementById('valQ').textContent = q + 'px';
+  document.getElementById('valOpt').textContent = o + 'px';
+  document.getElementById('valAns').textContent = a + 'px';
+}
+
+function applyFontFamily() {
+  const f = document.getElementById('fontFamily').value;
+  document.documentElement.style.setProperty('--page-font', f);
+  PROBED_MAX_HEIGHT = null;
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => scheduleRender());
+  } else {
+    scheduleRender();
+  }
+}
+
+function applyPreset() {
+  const p = document.getElementById('preset').value;
+  if (p === 'small') setFonts(11, 10, 10);
+  else if (p === 'medium') setFonts(13, 12, 12);
+  else if (p === 'large') setFonts(15, 14, 14);
+  PROBED_MAX_HEIGHT = null;
+  scheduleRender();
+}
+
+function customFont() {
+  const p = document.getElementById('preset');
+  if (p.value !== 'custom') p.value = 'custom';
+  setFonts(+document.getElementById('fsQ').value, +document.getElementById('fsOpt').value, +document.getElementById('fsAns').value);
+  PROBED_MAX_HEIGHT = null;
+  scheduleRender();
+}
+
+/* ========== সেভ / ব্যাকআপ ========== */
+function saveToBrowser() {
+  localStorage.setItem('mcq_text', document.getElementById('editor').value);
+  alert('✅ সেভ হয়েছে!');
+}
+function downloadBackup() {
+  const data = {
+    text: document.getElementById('editor').value,
+    bookName: document.getElementById('bookName').value,
+    chapter: document.getElementById('chapterName').value,
+    brand: document.getElementById('brandName').value,
+    density: document.getElementById('density').value,
+    mode: document.getElementById('mode').value,
+    fontFamily: document.getElementById('fontFamily').value,
+    fonts: { q: document.getElementById('fsQ').value, opt: document.getElementById('fsOpt').value, ans: document.getElementById('fsAns').value }
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'mcq-backup.json';
+  a.click();
+}
+function loadBackup() {
+  const input = document.createElement('input');
+  input.type = 'file'; input.accept = '.json';
+  input.onchange = e => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const d = JSON.parse(ev.target.result);
+        document.getElementById('editor').value = d.text || '';
+        document.getElementById('bookName').value = d.bookName || '';
+        document.getElementById('chapterName').value = d.chapter || '';
+        document.getElementById('brandName').value = d.brand || 'EDUZEN';
+        document.getElementById('density').value = d.density || 'normal';
+        document.getElementById('mode').value = d.mode || 'both';
+        if (d.fontFamily) document.getElementById('fontFamily').value = d.fontFamily;
+        if (d.fonts) setFonts(d.fonts.q || 13, d.fonts.opt || 12, d.fonts.ans || 12);
+        PROBED_MAX_HEIGHT = null;
+        applyFontFamily();
+        render();
+        alert('✅ রিস্টোর হয়েছে!');
+      } catch (err) { alert('❌ ফাইল পড়া গেল না'); }
+    };
+    reader.readAsText(e.target.files[0]);
+  };
+  input.click();
+}
+
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => scheduleRender());
+} else {
+  window.addEventListener('load', () => scheduleRender());
+}
+</script>
+</body>
+</html>
